@@ -27,16 +27,64 @@ GameCtrl.Game.prototype = {
 
 
     create: function () {
+            this.cursors =this.game.input.keyboard.createCursorKeys();
+            this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
 
-            //        Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-            this.background = this.add.sprite(0, 0, 'background');
             
+            this.lion= this.game.add.sprite(85, 665, 'clown','lion0000');
+            this.lion.scale.x =3;
+            this.lion.scale.y =3;
+            this.lion.animations.add('runLion', Phaser.Animation.generateFrameNames('lion', 0, 2, '', 4), 3 /*fps */, true);
+            this.lion.animations.add('idleLion', Phaser.Animation.generateFrameNames('lion', 0, 0, '', 4), 1 /*fps */, true);
+            
+            this.clown= this.game.add.sprite(100, 600, 'clown','clownStand0000');
+            this.clown.scale.x =3;
+            this.clown.scale.y =3;
+            this.clown.isRunning=false;
 
     },
 
     update: function () {
+        
 
-            //        Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
+        if(this.clown.y < 600){
+            this.clown.body.gravity.y = 600;
+            this.clown.frameName='clownStandJump0000';
+        }else{
+            this.clown.frameName='clownStand0000';
+            this.clown.isJumping=false;
+            this.clown.frameName
+            this.clown.y = 600;
+            this.clown.body.gravity.y = 0;
+            this.clown.body.velocity.y = 0;
+        }
+
+        if (this.cursors.up.isDown&& !this.clown.isJumping){
+            this.clown.body.velocity.y = -450;
+            this.clown.isJumping=true;
+        }
+        
+
+        if(this.clown.isJumping){
+            // Mantengo la velocidad del fondo
+            if(this.clown.isRunning){
+                this.background.tilePosition.x -= 4;
+            }
+
+            return;
+        }
+
+        if (this.cursors.right.isDown){
+            this.clown.isRunning=true;
+            this.background.tilePosition.x -= 4;
+            this.lion.animations.play('runLion', 10, true);
+        }else{
+            this.clown.isRunning=false;
+            this.lion.animations.stop(0);
+            this.lion.animations.play('idleLion');
+        }
+
+
 
     },
 

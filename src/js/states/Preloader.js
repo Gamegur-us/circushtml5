@@ -6,16 +6,6 @@ var WebFontConfig = {
 			}
   		};
 
-  		(function() {
-    		var wf = document.createElement('script');
-    		wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-              '://ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js';
-    		wf.type = 'text/javascript';
-    		wf.async = 'true';
-    		var s = document.getElementsByTagName('script')[0];
-    		s.parentNode.insertBefore(wf, s);
-  		})();
-
 GameCtrl.Preloader = function (game) {
 
 	this.background = null;
@@ -28,6 +18,7 @@ GameCtrl.Preloader = function (game) {
 GameCtrl.Preloader.prototype = {
 
 	preload: function () {
+	    this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
 		//	These are the assets we loaded in Boot.js
 		//	A nice sparkly background and a loading progress bar		

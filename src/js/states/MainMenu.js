@@ -12,46 +12,78 @@ GameCtrl.MainMenu.prototype = {
 
         preload: function(){
             var botData=
-{"frames": [
+{'frames': [
     {
-    "filename": "clown0000",
-    "frame": {"x":164,"y":5,"w":16,"h":24},
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": {"x":0,"y":0,"w":16,"h":24},
-    "sourceSize": {"w":16,"h":24}
+    'filename': 'clown0000',
+    'frame': {'x':164,'y':5,'w':16,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':16,'h':24}
     },
     {
-    "filename": "clown0001",
-    "frame": {"x":185,"y":5,"w":16,"h":24},
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": {"x":0,"y":0,"w":16,"h":24},
-    "sourceSize": {"w":16,"h":24}
+    'filename': 'clown0001',
+    'frame': {'x':185,'y':5,'w':16,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':16,'h':24}
     },
     {
-    "filename": "clown0002",
-    "frame": {"x":205,"y":5,"w":16,"h":24},
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": {"x":0,"y":0,"w":16,"h":24},
-    "sourceSize": {"w":16,"h":24}
+    'filename': 'clown0002',
+    'frame': {'x':205,'y':5,'w':16,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':16,'h':24}
     },
     {
-    "filename": "clownJump0003",
-    "frame": {"x":226,"y":5,"w":16,"h":24},
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": {"x":0,"y":0,"w":16,"h":24},
-    "sourceSize": {"w":16,"h":24}
+    'filename': 'clownJump0003',
+    'frame': {'x':226,'y':5,'w':16,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':16,'h':24}
     },
     {
-    "filename": "lion0000",
-    "frame": {"x":164,"y":87,"w":33,"h":16},
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": {"x":0,"y":0,"w":33,"h":16},
-    "sourceSize": {"w":33,"h":16}
+    'filename': 'clownStand0000',
+    'frame': {'x':164,'y':58,'w':15,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':15,'h':24}
+    },
+    {
+    'filename': 'clownStandJump0000',
+    'frame': {'x':182,'y':58,'w':15,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':15,'h':24}
+    },
+    {
+    'filename': 'lion0002',
+    'frame': {'x':164,'y':87,'w':33,'h':16},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':33,'h':16},
+    'sourceSize': {'w':33,'h':16}
+    },
+    {
+    'filename': 'lion0001',
+    'frame': {'x':200,'y':87,'w':33,'h':16},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':33,'h':16},
+    'sourceSize': {'w':33,'h':16}
+    },
+    {
+    'filename': 'lion0000',
+    'frame': {'x':234,'y':87,'w':33,'h':16},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':33,'h':16},
+    'sourceSize': {'w':33,'h':16}
     }
     
 
@@ -78,7 +110,9 @@ GameCtrl.MainMenu.prototype = {
                 starsmenu.scale.x =5;
                 starsmenu.scale.y =5;
 
-                this.game.add.sprite(290, 170, 'logo');
+                var logo=this.game.add.sprite(250, 170, 'logo');
+                logo.scale.x=0.8;
+                logo.scale.y=0.8;
                 
 
                 //this.playButton = this.add.button(this.game.width / 2 - 160, this.game.height / 2 - 120, 'playButton', this.startGame, this, 'buttonOver', 'buttonOut', 'buttonOver');
@@ -96,6 +130,8 @@ GameCtrl.MainMenu.prototype = {
                 clown.scale.x =4;
                 clown.scale.y =4;
                 clown.body.velocity.x =100;
+
+                
 
                 clown.animations.add('run', Phaser.Animation.generateFrameNames('clown', 0, 2, '', 4), 10 /*fps */, true);
                 clown.animations.play('run', 8, true);
