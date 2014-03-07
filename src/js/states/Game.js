@@ -24,43 +24,63 @@ GameCtrl.Game = function (game) {
 };
 
 GameCtrl.Game.prototype = {
-
-
+    
     create: function () {
             this.cursors =this.game.input.keyboard.createCursorKeys();
-            this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
+            //this.game.world.setBounds(0,0,4000, 2000);
+            this.game.world.setBounds(0,0,1024 * 8, 200);
+            //this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
+            this.background=this.game.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
+
 
             
-            this.lion= this.game.add.sprite(85, 665, 'clown','lion0000');
+            this.lion= this.game.add.sprite(85, 625, 'clown','lion0000');
             this.lion.scale.x =3;
             this.lion.scale.y =3;
             this.lion.animations.add('runLion', Phaser.Animation.generateFrameNames('lion', 0, 2, '', 4), 3 /*fps */, true);
             this.lion.animations.add('idleLion', Phaser.Animation.generateFrameNames('lion', 0, 0, '', 4), 1 /*fps */, true);
             
-            this.clown= this.game.add.sprite(100, 600, 'clown','clownStand0000');
+            this.clown= this.game.add.sprite(100, 560, 'clown','clownStand0000');
             this.clown.scale.x =3;
             this.clown.scale.y =3;
             this.clown.isRunning=false;
 
+            this.clown.body.collideWorldBounds=true;
+            this.lion.body.collideWorldBounds=true;
+
+
+            this.player=this.game.add.group();
+            this.player.add(this.lion);
+            this.player.add(this.clown);
+            
+            for(var i=10;i>=0;i--){
+                this.game.add.text((10-i)*700, 680, (i*100)+' m', {
+                  font : '50px "arcadeclasic"',
+                  fill : '#fff',
+                  align : 'center'
+                });
+            }
+
     },
 
     update: function () {
-        
-
-        if(this.clown.y < 600){
-            this.clown.body.gravity.y = 600;
+        if(this.clown.y < 560){
+            
             this.clown.frameName='clownStandJump0000';
+            this.lion.frameName='lion0002';            
         }else{
             this.clown.frameName='clownStand0000';
             this.clown.isJumping=false;
-            this.clown.frameName
-            this.clown.y = 600;
-            this.clown.body.gravity.y = 0;
-            this.clown.body.velocity.y = 0;
+            this.clown.y = 560;
+            this.lion.y = 625;
+            this.player.setAll('body.velocity.y',0);
         }
 
         if (this.cursors.up.isDown&& !this.clown.isJumping){
-            this.clown.body.velocity.y = -450;
+            this.player.setAll('body.velocity.y',-500);
+            this.player.setAll('body.gravity.y',700);
+            
+         
             this.clown.isJumping=true;
         }
         
@@ -68,7 +88,8 @@ GameCtrl.Game.prototype = {
         if(this.clown.isJumping){
             // Mantengo la velocidad del fondo
             if(this.clown.isRunning){
-                this.background.tilePosition.x -= 4;
+                this.game.camera.x += 4;
+                this.player.setAll('body.velocity.x',250);
             }
 
             return;
@@ -76,9 +97,13 @@ GameCtrl.Game.prototype = {
 
         if (this.cursors.right.isDown){
             this.clown.isRunning=true;
-            this.background.tilePosition.x -= 4;
+            //this.background.tilePosition.x -= 4;
+            this.game.camera.x += 4;
+            this.player.setAll('body.velocity.x',250);
             this.lion.animations.play('runLion', 10, true);
         }else{
+            this.player.setAll('body.velocity.x',0);
+                
             this.clown.isRunning=false;
             this.lion.animations.stop(0);
             this.lion.animations.play('idleLion');
