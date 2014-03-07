@@ -84,6 +84,23 @@ GameCtrl.MainMenu.prototype = {
     'trimmed': true,
     'spriteSourceSize': {'x':0,'y':0,'w':33,'h':16},
     'sourceSize': {'w':33,'h':16}
+    },    
+    {
+    'filename': 'firepot0000',
+    'frame': {'x':221,'y':194,'w':24,'h':31},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':24,'h':31},
+    'sourceSize': {'w':24,'h':31}
+    },    
+    {
+    'filename': 'firepot0001',
+    'frame': {'x':195,'y':194,'w':24,'h':31},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':24,'h':31},
+    'sourceSize': {'w':24,'h':31}
+    
     }
     
 

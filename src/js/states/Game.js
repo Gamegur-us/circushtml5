@@ -1,3 +1,4 @@
+'use strict';
 GameCtrl.Game = function (game) {
 
         //        When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
@@ -61,13 +62,31 @@ GameCtrl.Game.prototype = {
                 });
             }
 
+            this.obstacles=this.game.add.group();
+            for (i = 500; i < 1024 * 8; i+=550){
+                this.obstacles.add(this.game.add.sprite(i, 580, 'clown','firepot0000'));
+            }
+            this.obstacles.setAll('scale.x',3);
+            this.obstacles.setAll('scale.y',3);
+            this.obstacles.callAll('animations.add', 'animations', 'burnPot', Phaser.Animation.generateFrameNames('firepot', 0, 1, '', 4), 10, true);
+            this.obstacles.callAll('animations.play', 'animations', 'burnPot');
+
+
+    
     },
 
     update: function () {
+
+        this.game.physics.overlap(this.obstacles, this.player, function(){
+            console.log('game over');
+            
+        }, null, this);
+
+        this.game.camera.x=this.clown.x-100;
         if(this.clown.y < 560){
             
             this.clown.frameName='clownStandJump0000';
-            this.lion.frameName='lion0002';            
+            this.lion.frameName='lion0002';
         }else{
             this.clown.frameName='clownStand0000';
             this.clown.isJumping=false;
@@ -88,8 +107,7 @@ GameCtrl.Game.prototype = {
         if(this.clown.isJumping){
             // Mantengo la velocidad del fondo
             if(this.clown.isRunning){
-                this.game.camera.x += 4;
-                this.player.setAll('body.velocity.x',250);
+                //this.player.setAll('body.velocity.x',200);
             }
 
             return;
@@ -98,9 +116,15 @@ GameCtrl.Game.prototype = {
         if (this.cursors.right.isDown){
             this.clown.isRunning=true;
             //this.background.tilePosition.x -= 4;
-            this.game.camera.x += 4;
-            this.player.setAll('body.velocity.x',250);
+            
+            this.player.setAll('body.velocity.x',200);
             this.lion.animations.play('runLion', 10, true);
+        }else if (this.cursors.left.isDown){
+            this.clown.isRunning=true;
+            //this.background.tilePosition.x -= 4;
+            
+            this.player.setAll('body.velocity.x',-100);
+            this.lion.animations.play('runLion', 6, true);
         }else{
             this.player.setAll('body.velocity.x',0);
                 
