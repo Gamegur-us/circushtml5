@@ -9,7 +9,7 @@
   game.state.add('Boot', GameCtrl.Boot);
   game.state.add('Preloader', GameCtrl.Preloader);
   game.state.add('MainMenu', GameCtrl.MainMenu);
-  game.state.add('Game', GameCtrl.Game);
+  game.state.add('GameLevel1', GameCtrl.GameLevel1);
 
   //        Now start the Boot state.
   game.state.start('Boot');

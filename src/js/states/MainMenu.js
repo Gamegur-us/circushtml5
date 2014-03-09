@@ -99,9 +99,27 @@ GameCtrl.MainMenu.prototype = {
     'rotated': false,
     'trimmed': true,
     'spriteSourceSize': {'x':0,'y':0,'w':24,'h':31},
-    'sourceSize': {'w':24,'h':31}
+    'sourceSize': {'w':24,'h':31}    
+    },
+    {
+    'filename': 'firecircle0000',
+    'frame': {'x':136,'y':145,'w':24,'h':80},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':24,'h':80},
+    'sourceSize': {'w':24,'h':80}
     
+    },
+    {
+    'filename': 'firecircle0001',
+    'frame': {'x':165,'y':145,'w':24,'h':80},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':24,'h':80},
+    'sourceSize': {'w':24,'h':80}
     }
+
+
     
 
     
@@ -185,7 +203,7 @@ GameCtrl.MainMenu.prototype = {
                 this.music.stop();
 
                 //        And start the actual game
-                this.game.state.start('Game');
+                this.game.state.start('GameLevel1');
 
         }
 

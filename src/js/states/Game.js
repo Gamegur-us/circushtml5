@@ -1,5 +1,5 @@
 'use strict';
-GameCtrl.Game = function (game) {
+GameCtrl.GameLevel1 = function (game) {
 
         //        When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -24,24 +24,24 @@ GameCtrl.Game = function (game) {
 
 };
 
-GameCtrl.Game.prototype = {
+GameCtrl.GameLevel1.prototype = {
     
     create: function () {
             this.cursors =this.game.input.keyboard.createCursorKeys();
             //this.game.world.setBounds(0,0,4000, 2000);
-            this.game.world.setBounds(0,0,1024 * 8, 200);
+            this.world.setBounds(0,0,1024 * 8, 200);
             //this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
-            this.background=this.game.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
+            this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
 
 
             
-            this.lion= this.game.add.sprite(85, 625, 'clown','lion0000');
+            this.lion= this.add.sprite(85, 630, 'clown','lion0000');
             this.lion.scale.x =3;
             this.lion.scale.y =3;
             this.lion.animations.add('runLion', Phaser.Animation.generateFrameNames('lion', 0, 2, '', 4), 3 /*fps */, true);
             this.lion.animations.add('idleLion', Phaser.Animation.generateFrameNames('lion', 0, 0, '', 4), 1 /*fps */, true);
             
-            this.clown= this.game.add.sprite(100, 560, 'clown','clownStand0000');
+            this.clown= this.game.add.sprite(105, 565, 'clown','clownStand0000');
             this.clown.scale.x =3;
             this.clown.scale.y =3;
             this.clown.isRunning=false;
@@ -55,21 +55,72 @@ GameCtrl.Game.prototype = {
             this.player.add(this.clown);
             
             for(var i=10;i>=0;i--){
-                this.game.add.text((10-i)*700, 680, (i*100)+' m', {
+                this.add.text((10-i)*780, 680, (i*10)+' m', {
                   font : '50px "arcadeclasic"',
                   fill : '#fff',
                   align : 'center'
                 });
             }
 
-            this.obstacles=this.game.add.group();
-            for (i = 500; i < 1024 * 8; i+=550){
-                this.obstacles.add(this.game.add.sprite(i, 580, 'clown','firepot0000'));
+            this.obstacles=this.add.group();
+            for (i = 1200; i < 1024 * 8-800; i+=800){
+                this.obstacles.add(this.add.sprite(i, 585, 'clown','firepot0000'));
             }
+
+            this.firecircles=this.add.group();
+            for (i = 800; i < 1024 * 8; i+=800){
+                if(i%2){
+                    i-=300 + Math.floor(Math.random() * 100) + 1
+                }
+                i++;
+
+                            
+                var fireCircle=this.add.sprite(i, 335, 'clown','firecircle0000');
+                     fireCircle.body.collideWorldBounds=true;
+
+                fireCircle.events.onOutOfBounds.add(function(circle){
+                    console.log(circle.body.x);
+                if(circle.body.x<0){
+                    circle.reset(1024*8,335);
+                    circle.body.velocity.x=-70;
+                }
+                }  , this);
+                this.firecircles.add(fireCircle);
+            }
+
+            this.wall= this.add.sprite(0, 800, 'clown','');
+            this.wall.body.width=20;
+            this.wall.body.height=800;
+            this.wall.height=800;
+            this.wall.width=20;
+            //debugger;
+            
+
+            //sprite1.body.setRectangle(100, 50, 50, 25);
+            //sprite1.body.immovable = true;
+
+            /*this.firecircles.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds',function(circle){
+                console.log(circle.body.x);
+                if(circle.body.x<0){
+                    circle.reset(1024*8,335);
+                    circle.body.velocity.x=-70;
+                }
+                
+            });*/
+
+            this.firecircles.callAll('animations.add', 'animations', 'burnCircle', Phaser.Animation.generateFrameNames('firecircle', 0, 1, '', 4), 5, true);
+            this.firecircles.callAll('animations.play', 'animations', 'burnCircle');
+
+            this.firecircles.setAll('scale.x',3);
+            this.firecircles.setAll('scale.y',3);
+            this.firecircles.setAll('body.velocity.x',-70);
+            
+
             this.obstacles.setAll('scale.x',3);
             this.obstacles.setAll('scale.y',3);
             this.obstacles.callAll('animations.add', 'animations', 'burnPot', Phaser.Animation.generateFrameNames('firepot', 0, 1, '', 4), 10, true);
             this.obstacles.callAll('animations.play', 'animations', 'burnPot');
+
 
 
     
@@ -83,20 +134,20 @@ GameCtrl.Game.prototype = {
         }, null, this);
 
         this.game.camera.x=this.clown.x-100;
-        if(this.clown.y < 560){
+        if(this.clown.y < 565){
             
             this.clown.frameName='clownStandJump0000';
             this.lion.frameName='lion0002';
         }else{
             this.clown.frameName='clownStand0000';
             this.clown.isJumping=false;
-            this.clown.y = 560;
-            this.lion.y = 625;
+            this.clown.y = 565;
+            this.lion.y = 630;
             this.player.setAll('body.velocity.y',0);
         }
 
         if (this.cursors.up.isDown&& !this.clown.isJumping){
-            this.player.setAll('body.velocity.y',-500);
+            this.player.setAll('body.velocity.y',-480);
             this.player.setAll('body.gravity.y',700);
             
          
@@ -136,7 +187,6 @@ GameCtrl.Game.prototype = {
 
 
     },
-
     quitGame: function (pointer) {
 
             //        Here you should destroy anything you no longer need.
