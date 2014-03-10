@@ -1,4 +1,5 @@
 'use strict';
+
 GameCtrl.GameLevel1 = function (game) {
 
         //        When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
@@ -54,6 +55,7 @@ GameCtrl.GameLevel1.prototype = {
         this.clown.isRunning=false;
 
         this.clown.body.collideWorldBounds=true;
+
         this.lion.body.collideWorldBounds=true;
         
         this.player=this.game.add.group();
@@ -70,7 +72,13 @@ GameCtrl.GameLevel1.prototype = {
         this.obstacles=this.add.group();
         var w=this.world.bounds.width-800
         for (var i = 1200; i < w; i+=800){
-            this.obstacles.add(this.add.sprite(i, 585, 'clown','firepot0000'));
+            var firepot=this.add.sprite(i, 585, 'clown','firepot0000');
+            firepot.body.setPolygon( 10,0,14,0,20,30, 5,30 );
+            firepot.body.x=i;
+            firepot.body.y=585;
+
+            this.obstacles.add(firepot);
+            
         }
 
         this.obstacles.setAll('scale.x',3);
@@ -80,7 +88,6 @@ GameCtrl.GameLevel1.prototype = {
     },
     _createFireCirclesLeft:function(){
         var burnCircleLeft=Phaser.Animation.generateFrameNames('firecirclel', 0, 1, '', 4);
-        //var burnCircleRigth=Phaser.Animation.generateFrameNames('firecircler', 0, 1, '', 4);
         this.firecirclesLeft=this.add.group();
         for (var i = 800; i < this.world.bounds.width; i+=800){
             if(i%2){
@@ -90,9 +97,7 @@ GameCtrl.GameLevel1.prototype = {
 
                         
             var fireCircleLeft=this.add.sprite(i, 335, 'clown','firecirclel0000');
-            fireCircleLeft.animations.add('burnCircle', burnCircleLeft, 5, true);
-            
-//                            this.firecircles.callAll('animations.add', 'animations', 'burnCircle', , 5, true);
+            fireCircleLeft.animations.add('burnCircleLeft', burnCircleLeft, 5, true);
 
             this.firecirclesLeft.add(fireCircleLeft);            
         }
@@ -101,21 +106,25 @@ GameCtrl.GameLevel1.prototype = {
         this.firecirclesLeft.setAll('scale.y',3);
         this.firecirclesLeft.setAll('body.velocity.x',-70);
 
+        this.firecirclesLeft.callAll('animations.play', 'animations', 'burnCircleLeft');
 
     },
     _createFireCirclesRight:function(){
+        var burnCircleRigth=Phaser.Animation.generateFrameNames('firecircler', 0, 1, '', 4);
         this.firecirclesRight=this.add.group();
         var l=this.firecirclesLeft._container.children.length;
         for(var i=0;i<l;i++){
             var x =this.firecirclesLeft._container.children[i].body.x+30;
             var fireCircleRight=this.add.sprite(x, 335, 'clown','firecircler0000');    
+            fireCircleRight.animations.add('burnCircleRigth', burnCircleRigth, 5, true);
             this.firecirclesRight.add(fireCircleRight);
         }
         this.firecirclesRight.setAll('scale.x',3);
         this.firecirclesRight.setAll('scale.y',3);
         this.firecirclesRight.setAll('body.velocity.x',-70);
         
-                
+        this.firecirclesRight.callAll('animations.play', 'animations', 'burnCircleRigth');
+
     },
     create: function () {
             this.cursors =this.game.input.keyboard.createCursorKeys();
@@ -133,9 +142,17 @@ GameCtrl.GameLevel1.prototype = {
             this._createObstacles();
 
 
-            
-            
+            this.endStage=this.game.add.sprite(605, 620, 'clown','endLevel1');        
+            this.endStage.scale.x=3;
+            this.endStage.scale.y=3;
+            this.endStage.body.immovable = true;
+            this.endStage.body.checkCollision.left = false;
+            this.endStage.body.checkCollision.right = false;
+            this.endStage.body.collideWorldBounds = true;
 
+            this.floor = this.game.add.sprite(0, 678);
+            this.floor.scale.x = this.game.world.width;
+            this.endStage.body.immovable = true;
             
             
             // On out of world:
@@ -169,15 +186,15 @@ GameCtrl.GameLevel1.prototype = {
     },
 
     update: function () {
+        this.physics.collide(this.endStage, this.player);
 
-        this.game.physics.overlap(this.obstacles, this.player, function(){
+        this.physics.overlap(this.obstacles, this.player, function(){
             console.log('game over');
             
         }, null, this);
 
         this.game.camera.x=this.clown.x-100;
         if(this.clown.y < 565){
-            
             this.clown.frameName='clownStandJump0000';
             this.lion.frameName='lion0002';
         }else{
@@ -227,7 +244,17 @@ GameCtrl.GameLevel1.prototype = {
         }
 
 
-
+    },
+    render: function(){
+        /*this.game.debug.renderPhysicsBody(this.endStage.body);
+        this.game.debug.renderPhysicsBody(this.floor.body);
+        
+        this.firecirclesLeft.forEach(function (e) {
+                this.game.debug.renderPhysicsBody(e.body);
+        }, this);
+        this.obstacles.forEach(function (e) {
+                this.game.debug.renderPhysicsBody(e.body);
+        }, this);*/
     },
     quitGame: function (pointer) {
 

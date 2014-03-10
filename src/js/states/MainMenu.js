@@ -125,7 +125,6 @@ GameCtrl.MainMenu.prototype = {
     'trimmed': true,
     'spriteSourceSize': {'x':0,'y':0,'w':12,'h':80},
     'sourceSize': {'w':12,'h':80}
-    
     },
     {
     'filename': 'firecircler0001',
@@ -134,8 +133,16 @@ GameCtrl.MainMenu.prototype = {
     'trimmed': true,
     'spriteSourceSize': {'x':0,'y':0,'w':12,'h':80},
     'sourceSize': {'w':12,'h':80}
+    },
+    {'filename': 'endLevel1',
+    'frame': {'x':129,'y':243,'w':37,'h':22},
+    'rotated': false,
+    'trimmed': true,
+    // con esto modifico el cuadrado para las colisiones
+    'spriteSourceSize': {'x':0,'y':-4,'w':37,'h':22},
+    'sourceSize': {'w':37,'h':18}
     }
-
+    
 
     
 
