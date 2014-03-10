@@ -102,21 +102,38 @@ GameCtrl.MainMenu.prototype = {
     'sourceSize': {'w':24,'h':31}    
     },
     {
-    'filename': 'firecircle0000',
-    'frame': {'x':136,'y':145,'w':24,'h':80},
+    'filename': 'firecirclel0000',
+    'frame': {'x':136,'y':145,'w':12,'h':80},
     'rotated': false,
     'trimmed': true,
-    'spriteSourceSize': {'x':0,'y':0,'w':24,'h':80},
-    'sourceSize': {'w':24,'h':80}
+    'spriteSourceSize': {'x':0,'y':0,'w':12,'h':80},
+    'sourceSize': {'w':12,'h':80}
     
     },
     {
-    'filename': 'firecircle0001',
-    'frame': {'x':165,'y':145,'w':24,'h':80},
+    'filename': 'firecirclel0001',
+    'frame': {'x':165,'y':145,'w':12,'h':80},
     'rotated': false,
     'trimmed': true,
-    'spriteSourceSize': {'x':0,'y':0,'w':24,'h':80},
-    'sourceSize': {'w':24,'h':80}
+    'spriteSourceSize': {'x':0,'y':0,'w':12,'h':80},
+    'sourceSize': {'w':12,'h':80}
+    },
+    {
+    'filename': 'firecircler0000',
+    'frame': {'x':148,'y':145,'w':12,'h':80},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':12,'h':80},
+    'sourceSize': {'w':12,'h':80}
+    
+    },
+    {
+    'filename': 'firecircler0001',
+    'frame': {'x':177,'y':145,'w':12,'h':80},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':12,'h':80},
+    'sourceSize': {'w':12,'h':80}
     }
 
 

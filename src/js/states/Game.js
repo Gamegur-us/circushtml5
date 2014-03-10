@@ -26,6 +26,97 @@ GameCtrl.GameLevel1 = function (game) {
 
 GameCtrl.GameLevel1.prototype = {
     
+    /**
+     * Draw the distance
+     */
+    _createMeters:function(){
+        for(var i=10;i>=0;i--){
+            this.add.text((10-i)*780, 680, (i*10)+' m', {
+                font : '50px "arcadeclasic"',
+                fill : '#fff',
+                align : 'center'
+            });
+        }
+    },
+    /**
+     * Create player group (the clown and the lion)
+     */
+    _createPlayer:function(){
+        this.lion= this.add.sprite(85, 630, 'clown','lion0000');
+        this.lion.scale.x =3;
+        this.lion.scale.y =3;
+        this.lion.animations.add('runLion', Phaser.Animation.generateFrameNames('lion', 0, 2, '', 4), 3 /*fps */, true);
+        this.lion.animations.add('idleLion', Phaser.Animation.generateFrameNames('lion', 0, 0, '', 4), 1 /*fps */, true);
+        
+        this.clown=this.game.add.sprite(105, 565, 'clown','clownStand0000');
+        this.clown.scale.x =3;
+        this.clown.scale.y =3;
+        this.clown.isRunning=false;
+
+        this.clown.body.collideWorldBounds=true;
+        this.lion.body.collideWorldBounds=true;
+        
+        this.player=this.game.add.group();
+
+        this.player.add(this.lion);
+        this.player.add(this.clown);
+
+    },
+
+    /**
+     * Create the static obstacles (firepots)
+     */
+    _createObstacles:function(){
+        this.obstacles=this.add.group();
+        var w=this.world.bounds.width-800
+        for (var i = 1200; i < w; i+=800){
+            this.obstacles.add(this.add.sprite(i, 585, 'clown','firepot0000'));
+        }
+
+        this.obstacles.setAll('scale.x',3);
+        this.obstacles.setAll('scale.y',3);
+        this.obstacles.callAll('animations.add', 'animations', 'burnPot', Phaser.Animation.generateFrameNames('firepot', 0, 1, '', 4), 10, true);
+        this.obstacles.callAll('animations.play', 'animations', 'burnPot');
+    },
+    _createFireCirclesLeft:function(){
+        var burnCircleLeft=Phaser.Animation.generateFrameNames('firecirclel', 0, 1, '', 4);
+        //var burnCircleRigth=Phaser.Animation.generateFrameNames('firecircler', 0, 1, '', 4);
+        this.firecirclesLeft=this.add.group();
+        for (var i = 800; i < this.world.bounds.width; i+=800){
+            if(i%2){
+                i-=300 + Math.floor(Math.random() * 100) + 1
+            }
+            i++;
+
+                        
+            var fireCircleLeft=this.add.sprite(i, 335, 'clown','firecirclel0000');
+            fireCircleLeft.animations.add('burnCircle', burnCircleLeft, 5, true);
+            
+//                            this.firecircles.callAll('animations.add', 'animations', 'burnCircle', , 5, true);
+
+            this.firecirclesLeft.add(fireCircleLeft);            
+        }
+
+        this.firecirclesLeft.setAll('scale.x',3);
+        this.firecirclesLeft.setAll('scale.y',3);
+        this.firecirclesLeft.setAll('body.velocity.x',-70);
+
+
+    },
+    _createFireCirclesRight:function(){
+        this.firecirclesRight=this.add.group();
+        var l=this.firecirclesLeft._container.children.length;
+        for(var i=0;i<l;i++){
+            var x =this.firecirclesLeft._container.children[i].body.x+30;
+            var fireCircleRight=this.add.sprite(x, 335, 'clown','firecircler0000');    
+            this.firecirclesRight.add(fireCircleRight);
+        }
+        this.firecirclesRight.setAll('scale.x',3);
+        this.firecirclesRight.setAll('scale.y',3);
+        this.firecirclesRight.setAll('body.velocity.x',-70);
+        
+                
+    },
     create: function () {
             this.cursors =this.game.input.keyboard.createCursorKeys();
             //this.game.world.setBounds(0,0,4000, 2000);
@@ -34,70 +125,30 @@ GameCtrl.GameLevel1.prototype = {
             this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
 
 
+
+            this._createMeters();
+            this._createFireCirclesLeft();
+            this._createPlayer();
+            this._createFireCirclesRight();
+            this._createObstacles();
+
+
             
-            this.lion= this.add.sprite(85, 630, 'clown','lion0000');
-            this.lion.scale.x =3;
-            this.lion.scale.y =3;
-            this.lion.animations.add('runLion', Phaser.Animation.generateFrameNames('lion', 0, 2, '', 4), 3 /*fps */, true);
-            this.lion.animations.add('idleLion', Phaser.Animation.generateFrameNames('lion', 0, 0, '', 4), 1 /*fps */, true);
             
-            this.clown= this.game.add.sprite(105, 565, 'clown','clownStand0000');
-            this.clown.scale.x =3;
-            this.clown.scale.y =3;
-            this.clown.isRunning=false;
 
-            this.clown.body.collideWorldBounds=true;
-            this.lion.body.collideWorldBounds=true;
-
-
-            this.player=this.game.add.group();
-            this.player.add(this.lion);
-            this.player.add(this.clown);
             
-            for(var i=10;i>=0;i--){
-                this.add.text((10-i)*780, 680, (i*10)+' m', {
-                  font : '50px "arcadeclasic"',
-                  fill : '#fff',
-                  align : 'center'
-                });
-            }
-
-            this.obstacles=this.add.group();
-            for (i = 1200; i < 1024 * 8-800; i+=800){
-                this.obstacles.add(this.add.sprite(i, 585, 'clown','firepot0000'));
-            }
-
-            this.firecircles=this.add.group();
-            for (i = 800; i < 1024 * 8; i+=800){
-                if(i%2){
-                    i-=300 + Math.floor(Math.random() * 100) + 1
-                }
-                i++;
-
-                            
-                var fireCircle=this.add.sprite(i, 335, 'clown','firecircle0000');
-                     fireCircle.body.collideWorldBounds=true;
-
-                fireCircle.events.onOutOfBounds.add(function(circle){
-                    console.log(circle.body.x);
-                if(circle.body.x<0){
-                    circle.reset(1024*8,335);
-                    circle.body.velocity.x=-70;
-                }
-                }  , this);
-                this.firecircles.add(fireCircle);
-            }
-
-            this.wall= this.add.sprite(0, 800, 'clown','');
+            
+            // On out of world:
+            //      circle.reset(1024*8,335);
+            //      circle.body.velocity.x=-70;
+  
+  /*          this.wall= this.add.sprite(0, 800, 'clown','');
             this.wall.body.width=20;
             this.wall.body.height=800;
             this.wall.height=800;
-            this.wall.width=20;
+            this.wall.width=20;*/
             //debugger;
             
-
-            //sprite1.body.setRectangle(100, 50, 50, 25);
-            //sprite1.body.immovable = true;
 
             /*this.firecircles.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds',function(circle){
                 console.log(circle.body.x);
@@ -108,21 +159,12 @@ GameCtrl.GameLevel1.prototype = {
                 
             });*/
 
-            this.firecircles.callAll('animations.add', 'animations', 'burnCircle', Phaser.Animation.generateFrameNames('firecircle', 0, 1, '', 4), 5, true);
-            this.firecircles.callAll('animations.play', 'animations', 'burnCircle');
+  //          this.firecircles.callAll('animations.play', 'animations', 'burnCircle');
 
-            this.firecircles.setAll('scale.x',3);
-            this.firecircles.setAll('scale.y',3);
-            this.firecircles.setAll('body.velocity.x',-70);
             
-
-            this.obstacles.setAll('scale.x',3);
-            this.obstacles.setAll('scale.y',3);
-            this.obstacles.callAll('animations.add', 'animations', 'burnPot', Phaser.Animation.generateFrameNames('firepot', 0, 1, '', 4), 10, true);
-            this.obstacles.callAll('animations.play', 'animations', 'burnPot');
-
-
-
+   
+            
+            
     
     },
 
