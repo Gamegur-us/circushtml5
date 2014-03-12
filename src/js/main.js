@@ -1,4 +1,17 @@
-(function () {
+GameCtrl = {
+
+    /* Here we've just got some global level vars that persist regardless of State swaps */
+    score: 0,
+
+    /* If the music in your game needs to play through-out a few State swaps, then you could reference it here */
+    music: null,
+
+    /* Your game can check GameCtrl.orientated in internal loops to know if it should pause or not */
+    orientated: false
+
+};
+
+setTimeout(function () {
   //        Create your Phaser game and inject it into the game div.
   //        We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
   //        We're using a game size of 1024 x 768 here, but you can use whatever you feel makes sense for your game of course.
@@ -13,4 +26,4 @@
 
   //        Now start the Boot state.
   game.state.start('Boot');
-}());
+},100);
