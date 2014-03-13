@@ -216,7 +216,7 @@ GameCtrl.MainMenu.prototype = {
         },
         update: function () {
             // TODO remover esto!
-                this.startGame();
+//                this.startGame();
 
                 if(!this.enterPressed && this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
                         this.enterPressed=true;
