@@ -1,13 +1,16 @@
-var WebFontConfig = {
-    		custom: {
-				families: ['arcadeclasic'],
-    			urls: ['/css/fonts.css'],
-    			
-			}
-  		};
+'use strict';
+/* global GameCtrl */
 
-GameCtrl.Preloader = function (game) {
+/* jshint ignore:start */
+var WebFontConfig ={
+	custom: {
+		families: ['arcadeclasic'],
+		urls: ['/css/fonts.css'],
+	}
+};
+/* jshint ignore:end */
 
+GameCtrl.Preloader = function () {
 	this.background = null;
 	this.preloadBar = null;
 
@@ -18,7 +21,7 @@ GameCtrl.Preloader = function (game) {
 GameCtrl.Preloader.prototype = {
 
 	preload: function () {
-	    this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+		this.game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
 		//	These are the assets we loaded in Boot.js
 		//	A nice sparkly background and a loading progress bar		
@@ -31,7 +34,7 @@ GameCtrl.Preloader.prototype = {
 		this.load.setPreloadSprite(this.preloadBar);
 
 		//	Here we load the rest of the assets our game needs.		
-		this.load.image('background', 'assets/images/background.png');		
+		this.load.image('background', 'assets/images/background.png');
 		
 		//  This is how you load an atlas
 		//this.load.atlas('playButton', 'assets/images/play_button.png', 'assets/images/play_button.json');
@@ -65,8 +68,7 @@ GameCtrl.Preloader.prototype = {
 		//	If you don't have any music in your game then put the game.state.start line into the create function and delete
 		//	the update function completely.
 		
-		if (this.cache.isSoundDecoded('titleMusic') && this.ready == false)
-		{
+		if (this.cache.isSoundDecoded('titleMusic') && this.ready === false){
 			this.ready = true;
 			this.game.state.start('MainMenu');
 		}

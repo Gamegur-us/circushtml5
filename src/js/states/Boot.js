@@ -1,4 +1,5 @@
-GameCtrl = {
+'use strict';
+var GameCtrl = {
 
     /* Here we've just got some global level vars that persist regardless of State swaps */
     score: 0,
@@ -11,7 +12,7 @@ GameCtrl = {
 
 };
 
-GameCtrl.Boot = function (game) {
+GameCtrl.Boot = function () {
 };
 
 GameCtrl.Boot.prototype = {
@@ -46,7 +47,7 @@ GameCtrl.Boot.prototype = {
 
     },
 
-    gameResized: function (width, height) {
+    gameResized: function () {
 
         //  This could be handy if you need to do any extra processing if the game resizes.
         //  A resize could happen if for example swapping orientation on a device.
@@ -55,18 +56,18 @@ GameCtrl.Boot.prototype = {
 
     enterIncorrectOrientation: function () {
 
-        GameCtrl.orientated = false;
+/*        GameCtrl.orientated = false;
 
         document.getElementById('orientation').style.display = 'block';
-
+*/
     },
 
     leaveIncorrectOrientation: function () {
-
+/*
         GameCtrl.orientated = true;
 
         document.getElementById('orientation').style.display = 'none';
-
+*/
     }
 
 };

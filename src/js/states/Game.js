@@ -1,9 +1,10 @@
 'use strict';
+/* global GameCtrl */
 
-GameCtrl.GameLevel1 = function (game) {
+GameCtrl.GameLevel1 = function () {
 
         //        When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
-
+/*
     this.game;                //        a reference to the currently running game
     this.add;                //        used to add sprites, text, groups, etc
     this.camera;        //        a reference to the game camera
@@ -19,7 +20,7 @@ GameCtrl.GameLevel1 = function (game) {
     this.particles;        //        the particle manager
     this.physics;        //        the physics manager
     this.rnd;                //        the repeatable random number generator
-
+*/
     //        You can use any of these from any function within this State.
     //        But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
 
@@ -70,7 +71,7 @@ GameCtrl.GameLevel1.prototype = {
      */
     _createObstacles:function(){
         this.obstacles=this.add.group();
-        var w=this.world.bounds.width-800
+        var w=this.world.bounds.width-800;
         for (var i = 1200; i < w; i+=800){
             var firepot=this.add.sprite(i, 585, 'clown','firepot0000');
             firepot.body.setPolygon( 10,0,14,0,20,30, 5,30 );
@@ -91,7 +92,7 @@ GameCtrl.GameLevel1.prototype = {
         this.firecirclesLeft=this.add.group();
         for (var i = 800; i < this.world.bounds.width; i+=800){
             if(i%2){
-                i-=300 + Math.floor(Math.random() * 100) + 1
+                i-=300 + Math.floor(Math.random() * 100) + 1;
             }
             i++;
 
@@ -99,7 +100,7 @@ GameCtrl.GameLevel1.prototype = {
             var fireCircleLeft=this.add.sprite(i, 335, 'clown','firecirclel0000');
             fireCircleLeft.animations.add('burnCircleLeft', burnCircleLeft, 5, true);
 
-            this.firecirclesLeft.add(fireCircleLeft);            
+            this.firecirclesLeft.add(fireCircleLeft);
         }
 
         this.firecirclesLeft.setAll('scale.x',3);
@@ -115,7 +116,7 @@ GameCtrl.GameLevel1.prototype = {
         var l=this.firecirclesLeft._container.children.length;
         for(var i=0;i<l;i++){
             var x =this.firecirclesLeft._container.children[i].body.x+30;
-            var fireCircleRight=this.add.sprite(x, 335, 'clown','firecircler0000');    
+            var fireCircleRight=this.add.sprite(x, 335, 'clown','firecircler0000');
             fireCircleRight.animations.add('burnCircleRigth', burnCircleRigth, 5, true);
             this.firecirclesRight.add(fireCircleRight);
         }
@@ -142,7 +143,7 @@ GameCtrl.GameLevel1.prototype = {
             this._createObstacles();
 
 
-            this.endStage=this.game.add.sprite(605, 620, 'clown','endLevel1');        
+            this.endStage=this.game.add.sprite(605, 620, 'clown','endLevel1');
             this.endStage.scale.x=3;
             this.endStage.scale.y=3;
             this.endStage.body.immovable = true;
@@ -256,7 +257,7 @@ GameCtrl.GameLevel1.prototype = {
                 this.game.debug.renderPhysicsBody(e.body);
         }, this);*/
     },
-    quitGame: function (pointer) {
+    quitGame: function () {
 
             //        Here you should destroy anything you no longer need.
             //        Stop music, delete sprites, purge caches, free resources, all that good stuff.
