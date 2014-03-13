@@ -137,7 +137,8 @@ GameCtrl.GameLevel1.prototype = {
             var x =this.firecirclesLeft._container.children[i].body.x+30;
         
             var touchFire = this.game.add.sprite(x-14, 550);
-            touchFire.body.setCircle(11);
+            // collision dont work with circle :(
+            //touchFire.body.setCircle(11);
             this.fireCollisionGroup.add(touchFire);
 
         }
