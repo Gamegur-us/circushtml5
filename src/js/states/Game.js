@@ -281,12 +281,12 @@ GameCtrl.GameLevel1.prototype = {
 
     },
     render: function(){
-        this.game.debug.renderPhysicsBody(this.lion.body);
+  /*      this.game.debug.renderPhysicsBody(this.lion.body);
         this.game.debug.renderPhysicsBody(this.floor.body);
         this.fireCollisionGroup.forEach(function (e) {
             this.game.debug.renderPhysicsBody(e.body);
         }, this);
-        
+    */    
         /*this.game.debug.renderPhysicsBody(this.endStage.body);
         this.game.debug.renderPhysicsBody(this.floor.body);
         
