@@ -1,5 +1,4 @@
 /* global GameCtrl */
-'use strict';
 GameCtrl.MainMenu = function (/*game*/) {
 
         this.music = null;
@@ -62,6 +61,14 @@ GameCtrl.MainMenu.prototype = {
     'sourceSize': {'w':15,'h':24}
     },
     {
+    'filename': 'clownburn0000',
+    'frame': {'x':164,'y':32,'w':15,'h':24},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':16,'h':24},
+    'sourceSize': {'w':16,'h':24}
+    },
+    {
     'filename': 'lion0002',
     'frame': {'x':164,'y':87,'w':33,'h':16},
     'rotated': false,
@@ -80,6 +87,14 @@ GameCtrl.MainMenu.prototype = {
     {
     'filename': 'lion0000',
     'frame': {'x':234,'y':87,'w':33,'h':16},
+    'rotated': false,
+    'trimmed': true,
+    'spriteSourceSize': {'x':0,'y':0,'w':33,'h':16},
+    'sourceSize': {'w':33,'h':16}
+    },
+    {
+    'filename': 'lionburn0000',
+    'frame': {'x':272,'y':87,'w':33,'h':16},
     'rotated': false,
     'trimmed': true,
     'spriteSourceSize': {'x':0,'y':0,'w':33,'h':16},
@@ -201,7 +216,7 @@ GameCtrl.MainMenu.prototype = {
         },
         update: function () {
             // TODO remover esto!
-          //  this.startGame();
+                this.startGame();
 
                 if(!this.enterPressed && this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
                         this.enterPressed=true;

@@ -1,11 +1,11 @@
-'use strict';
+
 /* global GameCtrl */
 
 /* jshint ignore:start */
 var WebFontConfig ={
 	custom: {
 		families: ['arcadeclasic'],
-		urls: ['/css/fonts.css'],
+		urls: ['css/fonts.css'],
 	}
 };
 /* jshint ignore:end */

@@ -1,4 +1,3 @@
-'use strict';
 /* global GameCtrl */
 
 GameCtrl.GameLevel1 = function () {
@@ -44,25 +43,29 @@ GameCtrl.GameLevel1.prototype = {
      * Create player group (the clown and the lion)
      */
     _createPlayer:function(){
-        this.lion= this.add.sprite(85, 630, 'clown','lion0000');
+        
+        
+        this.lion=this.add.sprite(85, 630, 'clown','lion0000');
+        this.clown=this.game.add.sprite(6, -22, 'clown','clownStand0000');
+        this.lion.addChild(this.clown);
         this.lion.scale.x =3;
         this.lion.scale.y =3;
+        
+        this.lion.body.gravity.y=700;
+
         this.lion.animations.add('runLion', Phaser.Animation.generateFrameNames('lion', 0, 2, '', 4), 3 /*fps */, true);
         this.lion.animations.add('idleLion', Phaser.Animation.generateFrameNames('lion', 0, 0, '', 4), 1 /*fps */, true);
         
-        this.clown=this.game.add.sprite(105, 565, 'clown','clownStand0000');
-        this.clown.scale.x =3;
-        this.clown.scale.y =3;
+
         this.clown.isRunning=false;
 
-        this.clown.body.collideWorldBounds=true;
 
         this.lion.body.collideWorldBounds=true;
         
         this.player=this.game.add.group();
 
         this.player.add(this.lion);
-        this.player.add(this.clown);
+        //this.player.add(this.clown);
 
     },
 
@@ -128,6 +131,8 @@ GameCtrl.GameLevel1.prototype = {
 
     },
     create: function () {
+            this.gameover=false;
+
             this.cursors =this.game.input.keyboard.createCursorKeys();
             //this.game.world.setBounds(0,0,4000, 2000);
             this.world.setBounds(0,0,1024 * 8, 200);
@@ -152,8 +157,9 @@ GameCtrl.GameLevel1.prototype = {
             this.endStage.body.collideWorldBounds = true;
 
             this.floor = this.game.add.sprite(0, 678);
+            this.floor.body.immovable = true;
+            this.floor.body.collideWorldBounds = true;
             this.floor.scale.x = this.game.world.width;
-            this.endStage.body.immovable = true;
             
             
             // On out of world:
@@ -187,35 +193,48 @@ GameCtrl.GameLevel1.prototype = {
     },
 
     update: function () {
-        this.physics.collide(this.endStage, this.player);
+        if(this.gameover){
+            this.clown.frameName='clownburn0000';
+            this.lion.frameName='lionburn0000';
+            this.lion.body.gravity.y=0;
+            this.lion.body.velocity.y=0;
+            this.lion.body.velocity.x=0;
+            return;
+        }
+        this.lion.body.gravity.y=200;
 
-        this.physics.overlap(this.obstacles, this.player, function(){
-            console.log('game over');
+        this.physics.collide(this.endStage, this.lion);
+        this.physics.collide(this.floor, this.lion);
+
+        this.physics.overlap(this.obstacles, this.lion, function(){
+            this.lion.animations.stop(0);
+            this.gameover=true;
+
             
         }, null, this);
 
-        this.game.camera.x=this.clown.x-100;
-        if(this.clown.y < 565){
+        var isJumping=!this.lion.body.touching.down;
+
+        this.game.camera.x=this.lion.x-100;
+        if(isJumping){
+            if(this.lion.y<580){
+                this.lion.body.gravity.y=900;
+            }
             this.clown.frameName='clownStandJump0000';
             this.lion.frameName='lion0002';
+
         }else{
             this.clown.frameName='clownStand0000';
-            this.clown.isJumping=false;
-            this.clown.y = 565;
-            this.lion.y = 630;
-            this.player.setAll('body.velocity.y',0);
         }
 
-        if (this.cursors.up.isDown&& !this.clown.isJumping){
-            this.player.setAll('body.velocity.y',-480);
-            this.player.setAll('body.gravity.y',700);
-            
-         
-            this.clown.isJumping=true;
+        if (this.cursors.up.isDown&& !isJumping){
+            this.lion.body.velocity.y=-480;
+            console.log('jump');
+
         }
         
 
-        if(this.clown.isJumping){
+        if(isJumping){
             // Mantengo la velocidad del fondo
             if(this.clown.isRunning){
                 //this.player.setAll('body.velocity.x',200);
@@ -228,16 +247,16 @@ GameCtrl.GameLevel1.prototype = {
             this.clown.isRunning=true;
             //this.background.tilePosition.x -= 4;
             
-            this.player.setAll('body.velocity.x',200);
+            this.lion.body.velocity.x=200;
             this.lion.animations.play('runLion', 10, true);
         }else if (this.cursors.left.isDown){
             this.clown.isRunning=true;
             //this.background.tilePosition.x -= 4;
             
-            this.player.setAll('body.velocity.x',-100);
+            this.lion.body.velocity.x=-100;
             this.lion.animations.play('runLion', 6, true);
         }else{
-            this.player.setAll('body.velocity.x',0);
+            this.lion.body.velocity.x=0;
                 
             this.clown.isRunning=false;
             this.lion.animations.stop(0);
@@ -247,6 +266,8 @@ GameCtrl.GameLevel1.prototype = {
 
     },
     render: function(){
+        this.game.debug.renderPhysicsBody(this.lion.body);
+        this.game.debug.renderPhysicsBody(this.floor.body);
         /*this.game.debug.renderPhysicsBody(this.endStage.body);
         this.game.debug.renderPhysicsBody(this.floor.body);
         
