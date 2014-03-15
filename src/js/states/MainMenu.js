@@ -1,9 +1,10 @@
+(function(){
+'use strict';
+
 /* global GameCtrl */
 GameCtrl.MainMenu = function (/*game*/) {
-
-        this.music = null;
-        this.playButton = null;
-
+    this.music = null;
+    this.playButton = null;
 };
 
 GameCtrl.MainMenu.prototype = {
@@ -252,3 +253,5 @@ GameCtrl.MainMenu.prototype = {
         }
 
 };
+
+})();

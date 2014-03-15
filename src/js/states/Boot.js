@@ -11,6 +11,9 @@ var GameCtrl = {
 
 };
 
+(function(){
+'use strict';
+
 GameCtrl.Boot = function () {
 };
 
@@ -72,3 +75,5 @@ GameCtrl.Boot.prototype = {
     }
 
 };
+
+})();

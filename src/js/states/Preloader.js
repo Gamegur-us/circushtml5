@@ -1,14 +1,16 @@
 
 /* global GameCtrl */
 
-/* jshint ignore:start */
+/* exported WebFontConfig */
 var WebFontConfig ={
 	custom: {
 		families: ['arcadeclasic'],
 		urls: ['css/fonts.css'],
 	}
 };
-/* jshint ignore:end */
+
+(function(){
+'use strict';
 
 GameCtrl.Preloader = function () {
 	this.background = null;
@@ -76,3 +78,5 @@ GameCtrl.Preloader.prototype = {
 	}
 
 };
+
+})();
