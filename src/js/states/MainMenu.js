@@ -199,10 +199,15 @@ GameCtrl.MainMenu.prototype = {
                 };
                 //var textobj = 
                 this.startText=this.game.add.text(this.game.width / 2 - 180, this.game.height / 2 + 120, 'Press  ENTER  to\n start playing', textstyle);
-             
+
+
+                this.game.physics.startSystem(Phaser.Physics.ARCADE);
+                     
                 var clown= this.game.add.sprite(100, 600, 'clown');
                 clown.scale.x =4;
                 clown.scale.y =4;
+                this.game.physics.enable(clown, Phaser.Physics.ARCADE);
+
                 clown.body.velocity.x =100;
 
                 
