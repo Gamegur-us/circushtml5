@@ -49,7 +49,7 @@ module.exports = (grunt) ->
     uglify:
       dist:
         files:
-          '<%= DST_FILE %>.min.js': ['<%= SRC_DIR %>/js/**/*.js']
+          '<%= DST_FILE %>.min.js': ['<%= SRC_DIR %>/js/**/*.js', '!<%= SRC_DIR %>/js/main.js', '<%= SRC_DIR %>/js/main.js']
 
       options:
         banner: '/*! <%= PKG.name %> v<%= PKG.version %> */\n'
