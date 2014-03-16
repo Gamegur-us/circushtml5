@@ -51,12 +51,11 @@ GameCtrl.GameLevel1.prototype = {
 
         this.lion.body.setSize(90, 50, -5, 0);
         
-        //this.lion.body.addPolygon({},[0,0, 0,16, 28,16,  28,0, 18,0, 18,-20, 15,-23,  10,-23 , 10,0 ]);
-        this.clown=this.game.add.sprite(12, -22, 'clown','clownStand0000');
+        this.clown=this.game.add.sprite(7, -22, 'clown','clownStand0000');
         this.physics.enable(this.clown, Phaser.Physics.ARCADE,true);
-        this.clown.body.setSize(90, 50, -5, 0);
-        
         this.lion.addChild(this.clown);
+        
+        
         this.lion.scale.x =3;
         this.lion.scale.y =3;
         
@@ -150,42 +149,48 @@ GameCtrl.GameLevel1.prototype = {
         this.fireCollisionGroup.setAll('body.velocity.x',-70);
     },
     create: function () {
-            this.gameover=false;
-            this.music = this.add.audio('stage1');
-            this.music.play();
-            
-
-            this.cursors =this.game.input.keyboard.createCursorKeys();
-            this.world.setBounds(0,0,1024 * 8, 200);
-            //this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
-            this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
-
-
-
-            this._createMeters();
-            this._createFireCirclesLeft();
-            this._createPlayer();
-            this._createFireCirclesRight();
-            this._createObstacles();
+        this.gameover=false;
+        this.music = this.add.audio('stage1');
+        this.music.play();
         
-            this._createFireCirclesCollision();
 
-            this.floor = this.game.add.sprite(0, 678);
-            this.endStage=this.game.add.sprite(1024*8-300, 620, 'clown','endLevel1');
-            this.physics.enable(this.floor, Phaser.Physics.ARCADE);
-            this.physics.enable(this.endStage, Phaser.Physics.ARCADE);
-            this.endStage.scale.x=3;
-            this.endStage.scale.y=3;
-            this.endStage.body.immovable = true;
-
-            //this.endStage.body.checkCollision.left = false;
-            //this.endStage.body.checkCollision.right = false;
-            this.endStage.body.collideWorldBounds = true;
+        this.cursors =this.game.input.keyboard.createCursorKeys();
+        this.world.setBounds(0,0,1024 * 8, 200);
+        //this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
+        this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
 
 
-            this.floor.body.immovable = true;
-            this.floor.body.collideWorldBounds = true;
-            this.floor.body.width = this.game.world.width;
+
+        this._createMeters();
+        this._createFireCirclesLeft();
+        this._createPlayer();
+        this._createFireCirclesRight();
+        this._createObstacles();
+    
+        this._createFireCirclesCollision();
+
+        this.floor = this.game.add.sprite(0, 678);
+        this.endStage=this.game.add.sprite(1024*8-300, 620, 'clown','endLevel1');
+        this.physics.enable(this.floor, Phaser.Physics.ARCADE);
+        this.physics.enable(this.endStage, Phaser.Physics.ARCADE);
+        this.endStage.scale.x=3;
+        this.endStage.scale.y=3;
+        this.endStage.body.immovable = true;
+
+        //this.endStage.body.checkCollision.left = false;
+        //this.endStage.body.checkCollision.right = false;
+        this.endStage.body.collideWorldBounds = true;
+
+
+        this.floor.body.immovable = true;
+        this.floor.body.collideWorldBounds = true;
+        this.floor.body.width = this.game.world.width;
+
+        this.recicleFireCirclesWall = this.game.add.sprite(-12, 600);
+        this.physics.enable(this.recicleFireCirclesWall, Phaser.Physics.ARCADE);
+        this.recicleFireCirclesWall.body.immovable = true;
+        this.recicleFireCirclesWall.body.height = 500;
+        this.recicleFireCirclesWall.body.width = 2;
          
     },
     triggerGameover: function(){
@@ -215,14 +220,38 @@ GameCtrl.GameLevel1.prototype = {
 
         this.gameover=true;
     },
+    _recicleFireCircle:function(){
+        var fLeft=this.firecirclesLeft.getFirstExists();
+        var fRight=this.firecirclesRight.getFirstExists();
+        var fObstable=this.fireCollisionGroup.getFirstExists();
+        fLeft.body.x=this.world.width;
+        fRight.body.x=this.world.width+30;
+        fObstable.body.x=this.world.width+20;
+        fObstable.body.velocity.x=fLeft.body.velocity.x;
+        
+        this.firecirclesLeft.remove(fLeft);
+        this.firecirclesLeft.add(fLeft);
+        this.firecirclesRight.remove(fRight);
+        this.firecirclesRight.add(fRight);
+        this.fireCollisionGroup.remove(fObstable);
+        this.fireCollisionGroup.add(fObstable);
 
+    },
     update: function () {
         if(this.gameover){
             return;
         }
-        
+
+        if(this.lion.body.x<(this.world.width-1600)){
+            this.game.physics.arcade.collide(this.recicleFireCirclesWall,this.fireCollisionGroup, this._recicleFireCircle,null,this);
+        }
+
+
+
         this.game.physics.arcade.collide(this.lion, this.fireCollisionGroup, this.triggerGameover, null, this);
         this.game.physics.arcade.collide(this.lion, this.obstacles, this.triggerGameover, null, this);
+
+        
         this.game.physics.arcade.collide(this.endStage, this.lion);
         this.game.physics.arcade.collide(this.floor, this.lion);
 
@@ -272,11 +301,14 @@ GameCtrl.GameLevel1.prototype = {
 
     },
     render: function(){
+        /* global CIRCUSDEBUG */
+//        CIRCUSDEBUG=true;
         if(CIRCUSDEBUG){
             this.game.debug.bodyInfo(this.lion, 32, 320);
             
             this.game.debug.body(this.lion);
             this.game.debug.body(this.clown);
+            this.game.debug.body(this.recicleFireCirclesWall);
 
             this.game.debug.body(this.floor);
             this.obstacles.forEach(function (e) {
