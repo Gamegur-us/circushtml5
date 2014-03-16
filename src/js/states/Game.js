@@ -294,19 +294,21 @@ GameCtrl.GameLevel1.prototype = {
 
     },
     render: function(){
-        this.game.debug.bodyInfo(this.lion, 32, 320);
-        
-        this.game.debug.body(this.lion);
-        this.game.debug.body(this.clown);
+        if(CIRCUSDEBUG){
+            this.game.debug.bodyInfo(this.lion, 32, 320);
+            
+            this.game.debug.body(this.lion);
+            this.game.debug.body(this.clown);
 
-        this.game.debug.body(this.floor);
-        this.obstacles.forEach(function (e) {
-            this.game.debug.body(e);
-        }, this);
+            this.game.debug.body(this.floor);
+            this.obstacles.forEach(function (e) {
+                this.game.debug.body(e);
+            }, this);
 
-        this.fireCollisionGroup.forEach(function (e) {
-            this.game.debug.body(e);
-        }, this);
+            this.fireCollisionGroup.forEach(function (e) {
+                this.game.debug.body(e);
+            }, this);
+        }
 
     
 
