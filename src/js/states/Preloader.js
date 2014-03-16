@@ -41,7 +41,8 @@ GameCtrl.Preloader.prototype = {
 		//  This is how you load an atlas
 		//this.load.atlas('playButton', 'assets/images/play_button.png', 'assets/images/play_button.json');
 
-		this.load.audio('titleMusic', ['assets/audio/main_menu.mp3']);
+		this.load.audio('stage1', ['assets/audio/stage1-4.mp3']);
+		this.load.audio('failure', ['assets/audio/failure.mp3']);
 
 		//  This is how you load fonts
 		//this.load.bitmapFont('caslon', 'assets/fonts/caslon.png', 'assets/fonts/caslon.xml');
@@ -70,7 +71,7 @@ GameCtrl.Preloader.prototype = {
 		//	If you don't have any music in your game then put the game.state.start line into the create function and delete
 		//	the update function completely.
 		
-		if (this.cache.isSoundDecoded('titleMusic') && this.ready === false){
+		if (this.cache.isSoundDecoded('stage1') && this.ready === false){
 			this.ready = true;
 			this.game.state.start('MainMenu');
 		}

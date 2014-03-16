@@ -151,6 +151,9 @@ GameCtrl.GameLevel1.prototype = {
     },
     create: function () {
             this.gameover=false;
+            this.music = this.add.audio('stage1');
+            this.music.play();
+            
 
             this.cursors =this.game.input.keyboard.createCursorKeys();
             this.world.setBounds(0,0,1024 * 8, 200);
@@ -183,40 +186,14 @@ GameCtrl.GameLevel1.prototype = {
             this.floor.body.immovable = true;
             this.floor.body.collideWorldBounds = true;
             this.floor.body.width = this.game.world.width;
-            
-            
-            // On out of world:
-            //      circle.reset(1024*8,335);
-            //      circle.body.velocity.x=-70;
-  
-  /*          this.wall= this.add.sprite(0, 800, 'clown','');
-            this.wall.body.width=20;
-            this.wall.body.height=800;
-            this.wall.height=800;
-            this.wall.width=20;*/
-            //debugger;
-            
-
-            /*this.firecircles.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds',function(circle){
-                console.log(circle.body.x);
-                if(circle.body.x<0){
-                    circle.reset(1024*8,335);
-                    circle.body.velocity.x=-70;
-                }
-                
-            });*/
-
-  //          this.firecircles.callAll('animations.play', 'animations', 'burnCircle');
-
-            
-   
-            
-            
-    
+         
     },
     triggerGameover: function(){
-        console.log('gameover');
         var that=this;
+        this.music.stop();
+        this.failureSound=this.add.audio('failure');
+        this.failureSound.play();
+         
         setTimeout(function(){
             that.lion.animations.stop();
             that.clown.frameName='clownburn0000';
@@ -232,8 +209,9 @@ GameCtrl.GameLevel1.prototype = {
         },1);
         
         setTimeout(function(){
-            this.game.state.start('GameLevel1');
-        },800);
+            that.game.state.start('GameLevel1');
+            that.failureSound.stop();
+        },3100);
 
         this.gameover=true;
     },

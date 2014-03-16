@@ -11,8 +11,7 @@ GameCtrl.MainMenu.prototype = {
 
 
         preload: function(){
-            var botData=
-{'frames': [
+            var botData={'frames': [
     {
     'filename': 'clown0000',
     'frame': {'x':164,'y':5,'w':16,'h':24},
@@ -171,14 +170,6 @@ GameCtrl.MainMenu.prototype = {
         },
 
         create: function () {
-
-                //        We've already preloaded our assets, so let's kick right into the Main Menu itself.
-                //        Here all we're doing is playing some music and adding a picture and button
-                //        Naturally I expect you to do something significantly better :)
-
-                this.music = this.add.audio('titleMusic');
-                //this.music.play();
-
                 this.backgroundColor = '#000';
 
                 var starsmenu=this.game.add.sprite(130, 100, 'starsmenu');
@@ -232,7 +223,7 @@ GameCtrl.MainMenu.prototype = {
                                 _this.blinkedTimes++;
                                 if(_this.blinkedTimes>10){
                                         clearInterval(_this.timerBlinker);
-                                        _this.startGame();
+                                        _this.game.state.start('GameLevel1');
                                 }
                                 _this.startText.visible = !_this.startText.visible;
                         },30);
@@ -241,16 +232,6 @@ GameCtrl.MainMenu.prototype = {
                 //        Do some nice funky main menu effect here
 
         },
-
-        startGame: function ( /* pointer */) {
-
-                //        Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
-                this.music.stop();
-
-                //        And start the actual game
-                this.game.state.start('GameLevel1');
-
-        }
 
 };
 
