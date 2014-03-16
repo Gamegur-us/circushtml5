@@ -33,13 +33,26 @@ GameCtrl.GameLevel1.prototype = {
      * Draw the distance
      */
     _createMeters:function(){
+        var graphics = game.add.graphics(0, 0);
+        var x;
         for(var i=10;i>=0;i--){
-            this.add.text((10-i)*780, 680, (i*10)+' m', {
-                font : '50px "arcadeclasic"',
+            x=(10-i)*780;
+            this.add.text(x+15, 694, (i*10)+' m', {
+                font : '46px "arcadeclasic"',
                 fill : '#fff',
-                align : 'center'
+                align : 'left'
             });
+
+            
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.beginFill(0x000000, 1);
+            graphics.drawRect(x, 690, 130, 50);
+            graphics.lineStyle(5, 0xd42700, 1);
+            graphics.drawRect(x+5, 695, 120, 40);
+            
         }
+
+
     },
     /**
      * Create player group (the clown and the lion)
@@ -83,12 +96,13 @@ GameCtrl.GameLevel1.prototype = {
             firepot.body.x=i;
             firepot.body.y=600;
             firepot.body.immovable = true;
+            firepot.scale.x=3;
+            firepot.scale.y=3;
+        
             this.obstacles.add(firepot);
             
         }
 
-        this.obstacles.setAll('scale.x',3);
-        this.obstacles.setAll('scale.y',3);
         this.obstacles.callAll('animations.add', 'animations', 'burnPot', Phaser.Animation.generateFrameNames('firepot', 0, 1, '', 4), 10, true);
         this.obstacles.callAll('animations.play', 'animations', 'burnPot');
     },

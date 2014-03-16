@@ -171,7 +171,8 @@ GameCtrl.MainMenu.prototype = {
 
         create: function () {
                 this.backgroundColor = '#000';
-
+                
+        
                 var starsmenu=this.game.add.sprite(130, 100, 'starsmenu');
                 starsmenu.scale.x =5;
                 starsmenu.scale.y =5;
