@@ -58,24 +58,25 @@ GameCtrl.MainMenu.prototype = {
                 this.enterPressed=false;
         },
         update: function () {
+            //this.game.state.start('Prestage02');
             // TODO remover esto!
             //    this.startGame();
 
                 if(!this.enterPressed && this.game.input.keyboard.isDown(Phaser.Keyboard.ENTER)){
-                        this.enterPressed=true;
-                        var _this=this;
-                        this.blinkedTimes=-1;
-                        this.timerBlinker=setInterval(function(){
-                                _this.blinkedTimes++;
-                                if(_this.blinkedTimes>10){
-                                        clearInterval(_this.timerBlinker);
-                                        _this.game.state.start('GameLevel1');
-                                }
-                                _this.startText.visible = !_this.startText.visible;
-                        },30);
+                    this.enterPressed=true;
+                    
+                    this.blinkedTimes=-1;
+                    this.timerBlinker=setInterval(function(_this){
+                            _this.blinkedTimes++;
+                            if(_this.blinkedTimes>10){
+                                    clearInterval(_this.timerBlinker);
+                                    GameCtrl.data={textToRender:'STAGE 01', nextState:'Stage01' };
+                                    _this.game.state.start('Prestage');
 
+                            }
+                            _this.startText.visible = !_this.startText.visible;
+                    },30, this);
                 }
-                //        Do some nice funky main menu effect here
 
         },
 
