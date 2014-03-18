@@ -2,7 +2,7 @@
 
 (function(){
 'use strict';
-GameCtrl.GameLevel1 = function () {
+GameCtrl.Stage01 = function () {
 
         //        When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 /*
@@ -27,13 +27,13 @@ GameCtrl.GameLevel1 = function () {
 
 };
 
-GameCtrl.GameLevel1.prototype = {
+GameCtrl.Stage01.prototype = {
     
     /**
      * Draw the distance
      */
     _createMeters:function(){
-        var graphics = game.add.graphics(0, 0);
+        var graphics = this.add.graphics(0, 0);
         var x;
         for(var i=10;i>=0;i--){
             x=(10-i)*780;
@@ -171,7 +171,7 @@ GameCtrl.GameLevel1.prototype = {
         this.cursors =this.game.input.keyboard.createCursorKeys();
         this.world.setBounds(0,0,1024 * 8, 200);
         //this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
-        this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'background');
+        this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'stage01');
 
 
 
@@ -228,7 +228,7 @@ GameCtrl.GameLevel1.prototype = {
         },1);
         
         setTimeout(function(){
-            that.game.state.start('GameLevel1');
+            that.game.state.start('Stage01');
             that.failureSound.stop();
         },3100);
 
