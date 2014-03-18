@@ -242,7 +242,7 @@ var botData={'frames': [
     'trimmed': true,
     'spriteSourceSize': {'x':0,'y':0,'w':17,'h':16},
     'sourceSize': {'w':17,'h':16}
-    }    
+    }
     ]};
 
 
