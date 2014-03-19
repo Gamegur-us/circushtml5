@@ -43,6 +43,7 @@ GameCtrl.Preloader.prototype = {
 		//this.load.atlas('playButton', 'assets/images/play_button.png', 'assets/images/play_button.json');
 
 		this.load.audio('stage1', ['assets/audio/stage1-4.mp3']);
+        this.load.audio('stage2', ['assets/audio/stage1-4.mp3']);
 		this.load.audio('failure', ['assets/audio/failure.mp3']);
 
 		//  This is how you load fonts

@@ -58,7 +58,7 @@ GameCtrl.MainMenu.prototype = {
                 this.enterPressed=false;
         },
         update: function () {
-            //this.game.state.start('Prestage02');
+            //this.game.state.start('Stage02');
             // TODO remover esto!
             //    this.startGame();
 

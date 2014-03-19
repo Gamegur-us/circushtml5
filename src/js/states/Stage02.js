@@ -35,7 +35,7 @@ GameCtrl.Stage02.prototype = {
         var graphics = this.game.add.graphics(0, 0);
         var x;
         for(var i=10;i>=0;i--){
-            x=(10-i)*780;
+            x=(10-i)*705;
             this.add.text(x+15, 694, (i*10)+' m', {
                 font : '46px "arcadeclasic"',
                 fill : '#fff',
@@ -74,59 +74,79 @@ GameCtrl.Stage02.prototype = {
         this.player.body.collideWorldBounds=true;
         
     },
+    _monkyOut:function(m){
+        this.monkeys.remove(m);
+    },
+        
     _addMonkey:function(){
-        var monkey=this.add.sprite(this.player.x +950, 372, 'clown','monkey0');
-        monkey.scale.x=3;
-        monkey.scale.y=3;
-        this.physics.enable(monkey, Phaser.Physics.ARCADE);
-        monkey.body.velocity.x=-90;
-        monkey.animations.add('monkey', Phaser.Animation.generateFrameNames('monkey', 0, 2, '', 0), 3 /*fps */, true);
-        monkey.animations.play('monkey',6);
+        if(this.monkeys.total>3){
+            return;
+        }
 
+        var createMonky=function(x){
+            if(!x){
+                x=this.player.x +950+this.rnd.integerInRange(-400,200);
+                var xLast=(this.monkeys.length>0) ? this.monkeys.getAt(this.monkeys.length-1).x : false;
+                x=(xLast && (x-xLast)<500) ? xLast+500 : x;
+            }
+            
+
+            var monkey=this.monkeys.create(x, 372, 'clown','monkey0');
+            monkey.scale.x=3;
+            monkey.scale.y=3;
+            monkey.body.velocity.x=-90;
+            monkey.animations.add('monkey', Phaser.Animation.generateFrameNames('monkey', 0, 2, '', 0), 3 /*fps */, true);
+            monkey.animations.play('monkey',6);
+            monkey.checkWorldBounds = true;
+            monkey.events.onOutOfBounds.add(this._monkyOut, this);
+            monkey.body.setSize(44, 49, 0, 0);
+            monkey.body.gravity.y=400;
+            return monkey;
+        };
+
+        var difficulty=this.rnd.integerInRange(1,100);
+        var nMonkeys=(difficulty>40)? this.rnd.integerInRange(1,4) : 1;
+
+        var distance=50;
+        
+        var jumpTime=this.rnd.integerInRange(200,700);
+
+        for(var i=0;i<nMonkeys;i++){
+            difficulty=100;
+            if(i>1){
+                distance=100*i;
+                jumpTime=this.rnd.integerInRange(1000,2000);
+            }
+
+            var x=(i>0) ? this.monkeys.getAt(this.monkeys.length-1).x+distance : null;
+            var _monkey=createMonky.call(this,x);
+            
+            _monkey.jumpTime=(difficulty>70)? jumpTime:false;
+            _monkey.lastJump=this.time.lastTime;
+        }
     },
     /**
      * Create the static obstacles (firepots)
      */
     _createObstacles:function(){
-        this.obstacles=this.add.group();
+        this.monkeys=this.add.group();
+        this.monkeys.enableBody = true;
+        this.monkeys.physicsBodyType = Phaser.Physics.ARCADE;
         
-        this.game.time.events.loop(Phaser.Timer.SECOND*5, this._addMonkey, this);
+        this.game.time.events.loop(Phaser.Timer.SECOND, this._addMonkey, this);
 
-
-        
-        //this.monkey.body.setSize(35, 69, 0, 0);
-        
-        /*
-        var w=this.world.bounds.width-800;
-        for (var i = 1200; i < w; i+=800){
-            var firepot=this.add.sprite(i, 585, 'clown','firepot0000');
-            this.physics.enable(firepot, Phaser.Physics.ARCADE);
-            firepot.body.setSize(38, 48, -14, -15);
-            //firepot.body.setPolygon( 10,0,14,0,20,30, 5,30 );
-            firepot.body.x=i;
-            firepot.body.y=600;
-            firepot.body.immovable = true;
-            firepot.scale.x=3;
-            firepot.scale.y=3;
-        
-            this.obstacles.add(firepot);
-            
-        }
-
-        this.obstacles.callAll('animations.add', 'animations', 'burnPot', Phaser.Animation.generateFrameNames('firepot', 0, 1, '', 4), 10, true);
-        this.obstacles.callAll('animations.play', 'animations', 'burnPot');
-        */
     },
     create: function () {
+       
         this.gameover=false;
-        this.music = this.add.audio('stage1');
+        this.music = this.add.audio('stage2');
         this.music.play();
         
 
         this.cursors =this.game.input.keyboard.createCursorKeys();
-        this.world.setBounds(0,0,1024 * 7, 200);
+        this.world.setBounds(0,0,1024 * 8, 200);
         //this.background=this.game.add.tileSprite(0, 200, 1024, 552, 'background');
-        this.background=this.add.tileSprite(0, 200, 1024 * 7, 552, 'stage02');
+        this.background=this.add.tileSprite(0, 200, 1024 * 8, 552, 'stage02');
 
 
 
@@ -136,7 +156,7 @@ GameCtrl.Stage02.prototype = {
         
 
         this.floor = this.game.add.sprite(0, 417);
-        this.endStage=this.game.add.sprite(1024*7-300, 620, 'clown','endLevel1');
+        this.endStage=this.game.add.sprite(1024*8-300, 620, 'clown','endLevel1');
         this.physics.enable(this.floor, Phaser.Physics.ARCADE);
         this.physics.enable(this.endStage, Phaser.Physics.ARCADE);
         this.endStage.scale.x=3;
@@ -167,15 +187,18 @@ GameCtrl.Stage02.prototype = {
          
         setTimeout(function(){
             that.player.animations.stop();
-            that.player.frameName='lionburn0000';
+            that.player.frameName='clownburn0000';
 
             that.player.body.gravity.y=0;
             that.player.body.speed=0;
             that.player.body.velocity.y=0;
             that.player.body.velocity.x=0;
 
-            that.firecirclesRight.setAll('body.velocity.x',0);
-            that.firecirclesLeft.setAll('body.velocity.x',0);
+            that.monkeys.setAll('body.velocity.x',0);
+            that.monkeys.setAll('body.gravity.y',0);
+            that.monkeys.setAll('body.velocity.y',0);
+            that.monkeys.callAll('animations.stop', 'animations');
+            
         },1);
         
         setTimeout(function(){
@@ -197,17 +220,25 @@ GameCtrl.Stage02.prototype = {
 
 
         this.game.physics.arcade.collide(this.player, this.fireCollisionGroup, this.triggerGameover, null, this);
-        this.game.physics.arcade.collide(this.player, this.obstacles, this.triggerGameover, null, this);
 
         
       */
+        this.game.physics.arcade.collide(this.player, this.monkeys, this.triggerGameover, null, this);
+
+        this.monkeys.forEach(function(m){
+            if(m.jumpTime && m.body.y<370 && ((m.lastJump-this.time.lastTime)<m.jumpTime)){
+                m.body.velocity.y=-500;
+            }
+        }, this);
+
         this.game.physics.arcade.collide(this.endStage, this.player);
         this.game.physics.arcade.collide(this.floor, this.player);
+        this.game.physics.arcade.collide(this.floor, this.monkeys);
 
         this.player.body.gravity.y=800;
 
         var isJumping=!this.player.body.touching.down;
-        this.game.camera.x=this.player.x-100;
+        this.game.camera.x=this.player.x-120;
         if(isJumping){
             this.player.frameName='jumpBalance';
         }
@@ -230,7 +261,7 @@ GameCtrl.Stage02.prototype = {
             this.player.animations.play('walkBalance', 10, true);
         }else if (this.cursors.left.isDown){
             
-            this.player.body.velocity.x=-90;
+            this.player.body.velocity.x=-130;
             this.player.animations.play('walkBalance', 5, true);
         }else{
             this.player.body.velocity.x=0;
@@ -249,13 +280,9 @@ GameCtrl.Stage02.prototype = {
             this.game.debug.bodyInfo(this.player, 32, 320);
             
             this.game.debug.body(this.player);
-     //       this.game.debug.body(this.monkey);
-
-            //this.game.debug.body(this.floor);
-
-/*            this.fireCollisionGroup.forEach(function (e) {
+            this.monkeys.forEach(function (e) {
                 this.game.debug.body(e);
-            }, this);*/
+            }, this);
         }
 
     

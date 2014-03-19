@@ -251,6 +251,12 @@ GameCtrl.Stage01.prototype = {
         this.fireCollisionGroup.add(fObstable);
 
     },
+    triggerWin: function(){
+        GameCtrl.data={textToRender:'STAGE 02', nextState:'Stage02' };
+        setTimeout(function(_this){
+            _this.game.state.start('Prestage');
+        },10, this);
+    },
     update: function () {
         if(this.gameover){
             return;
@@ -266,8 +272,11 @@ GameCtrl.Stage01.prototype = {
         this.game.physics.arcade.collide(this.lion, this.obstacles, this.triggerGameover, null, this);
 
         
+        this.game.physics.arcade.collide(this.lion, this.endStage, this.triggerWin, null, this);
+
         this.game.physics.arcade.collide(this.endStage, this.lion);
         this.game.physics.arcade.collide(this.floor, this.lion);
+
 
         this.lion.body.gravity.y=700;
 
